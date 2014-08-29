@@ -4,7 +4,7 @@
     Parchment Single Sign-On Test Form 
     <br/> 
     <hr/> 
-    <form method="post">
+    <form action="{{ parchment_url }}" method="post">
         {% csrf_token %}
         {{ form.as_ul }}
         <input type="submit" value="Submit"> 

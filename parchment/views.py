@@ -8,6 +8,7 @@ from django.views.generic import FormView
 
 from .crypto import Parchment
 from .forms import ParchmentForm
+from .utils import add_query_params
 
 
 class ParchmentView(FormView):
@@ -33,3 +34,10 @@ class ParchmentView(FormView):
         p = Parchment(sso_key)
         return {'parch5': p.encrypt(self.get_connect_string()),
                 'parchiv': p.iv}
+
+    def get_context_data(self, **kwargs):
+        context = super(ParchmentView, self).get_context_data(**kwargs)
+        school_id = getattr(settings, 'PARCHMENT_SCHOOL_ID')
+        url = 'https://int-exchange.parchment.com/send/adds/index.php?main_page=sso'
+        context['parchment_url'] = add_query_params(url, {'s_id': school_id})
+        return context
