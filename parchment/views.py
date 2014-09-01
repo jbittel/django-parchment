@@ -14,7 +14,9 @@ from .utils import add_query_params
 class ParchmentView(FormView):
     form_class = ParchmentForm
     template_name = 'parchment/login.html'
+
     connect_variables = {}
+    parch_url = 'https://exchange.parchment.com/send/adds/index.php?main_page=sso'
     required_variables = ('student_id', 'customers_firstname', 'customers_lastname')
 
     def get(self, request, *args, **kwargs):
@@ -38,6 +40,6 @@ class ParchmentView(FormView):
     def get_context_data(self, **kwargs):
         context = super(ParchmentView, self).get_context_data(**kwargs)
         school_id = getattr(settings, 'PARCHMENT_SCHOOL_ID')
-        url = 'https://int-exchange.parchment.com/send/adds/index.php?main_page=sso'
+        url = getattr(settings, 'PARCHMENT_URL', self.parch_url)
         context['parchment_url'] = add_query_params(url, {'s_id': school_id})
         return context
