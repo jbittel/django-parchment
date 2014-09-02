@@ -2,6 +2,7 @@ from urllib import urlencode
 import uuid
 
 from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpResponseBadRequest
 from django.utils.timezone import now
 from django.views.generic import FormView
@@ -32,14 +33,22 @@ class ParchmentView(FormView):
         return urlencode(self.connect_variables)
 
     def get_initial(self):
-        sso_key = getattr(settings, 'PARCHMENT_SSO_KEY')
+        sso_key = getattr(settings, 'PARCHMENT_SSO_KEY', None)
+        if sso_key is None:
+            raise ImproperlyConfigured(
+                'PARCHMENT_SSO_KEY must be configured with your provided '
+                'SSO key')
         p = Parchment(sso_key)
         return {'parch5': p.encrypt(self.get_connect_string()),
                 'parchiv': p.iv}
 
     def get_context_data(self, **kwargs):
         context = super(ParchmentView, self).get_context_data(**kwargs)
-        school_id = getattr(settings, 'PARCHMENT_SCHOOL_ID')
+        school_id = getattr(settings, 'PARCHMENT_SCHOOL_ID', None)
+        if school_id is None:
+            raise ImproperlyConfigured(
+                'PARCHMENT_SCHOOL_ID must be configured with your provided '
+                '16 character organization identifier'
         url = getattr(settings, 'PARCHMENT_URL', self.parch_url)
         context['parchment_url'] = add_query_params(url, {'s_id': school_id})
         return context
