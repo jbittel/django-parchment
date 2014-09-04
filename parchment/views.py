@@ -48,7 +48,7 @@ class ParchmentView(FormView):
         if school_id is None:
             raise ImproperlyConfigured(
                 'PARCHMENT_SCHOOL_ID must be configured with your provided '
-                '16 character organization identifier'
+                '16 character organization identifier')
         url = getattr(settings, 'PARCHMENT_URL', self.parch_url)
         context['parchment_url'] = add_query_params(url, {'s_id': school_id})
         return context
