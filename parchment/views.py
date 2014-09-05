@@ -21,13 +21,13 @@ class ParchmentView(FormView):
     required_variables = ('student_id', 'customers_firstname', 'customers_lastname')
 
     def get(self, request, *args, **kwargs):
+        for var in self.required_variables:
+            if var not in request.GET:
+                return HttpResponseBadRequest("%s is required" % var)
         self.build_connect_string(request)
         return super(ParchmentView, self).get(request, *args, **kwargs)
 
     def build_connect_string(self, request):
-        for var in self.required_variables:
-            if var not in request.GET:
-                return HttpResponseBadRequest("%s is required" % var)
         self.connect_variables = request.GET.dict()
         self.connect_variables['ts'] = now().isoformat()
         self.connect_variables['rand'] = uuid.uuid4()
