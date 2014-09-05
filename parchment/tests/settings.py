@@ -32,3 +32,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'parchment',
 )
+
+PARCHMENT_SCHOOL_ID = '1234567890abcdef'
+PARCHMENT_SSO_KEY = 'dpYeodnsgmaOav5fsqN7bhZM8W8hoaBM'
+PARCHMENT_DEBUG_MODE = True
