@@ -13,6 +13,8 @@ DATABASES = {
     }
 }
 
+ROOT_URLCONF = 'parchment.urls'
+
 PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.MD5PasswordHasher',
 )
