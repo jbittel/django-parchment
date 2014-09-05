@@ -1,4 +1,5 @@
 import binascii
+from urllib import urlencode
 
 from Crypto.Cipher import AES
 from Crypto import Random
@@ -11,8 +12,10 @@ class Parchment:
         if self.iv is None:
             self.iv = binascii.hexlify(Random.new().read(AES.block_size))
 
-    def encrypt(self, s):
-        return self._encrypt(s, self.key, self.iv)
+    def encrypt(self, vars):
+        if isinstance(vars, dict):
+            vars = urlencode(vars)
+        return self._encrypt(vars, self.key, self.iv)
 
     def _pkcs5(self, s):
         padding = AES.block_size - len(s) % AES.block_size

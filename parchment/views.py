@@ -1,4 +1,3 @@
-from urllib import urlencode
 import uuid
 
 from django.conf import settings
@@ -32,9 +31,6 @@ class ParchmentView(FormView):
         self.connect_variables['ts'] = now().isoformat()
         self.connect_variables['rand'] = uuid.uuid4()
 
-    def encode_connect_string(self):
-        return urlencode(self.connect_variables)
-
     def get_initial(self):
         sso_key = getattr(settings, 'PARCHMENT_SSO_KEY', None)
         if sso_key is None:
@@ -42,7 +38,7 @@ class ParchmentView(FormView):
                 'PARCHMENT_SSO_KEY must be configured with your provided '
                 'SSO key')
         p = Parchment(sso_key)
-        return {'parch5': p.encrypt(self.encode_connect_string()),
+        return {'parch5': p.encrypt(self.connect_variables),
                 'parchiv': p.iv,
                 'debug': self.connect_variables['rand']}
 
