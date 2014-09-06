@@ -43,17 +43,29 @@ class ParchmentViewTests(TestCase):
         self.assertContains(response, '<input id="id_parch5" name="parch5" type="hidden" value="')
 
     def test_parchiv_field(self):
+        """
+        When a valid request is made to the login view, it should contain
+        a hidden ``parchiv`` field.
+        """
         request = self.rf.get(self.valid_login)
         response = ParchmentView.as_view()(request)
         self.assertContains(response, '<input id="id_parchiv" name="parchiv" type="hidden" value="')
 
     @override_settings(PARCHMENT_DEBUG_MODE=True)
     def test_debug_field(self):
+        """
+        When a valid request is made to the login view and debug mode is
+        enabled, it should contain a hidden ``debug`` field.
+        """
         request = self.rf.get(self.valid_login)
         response = ParchmentView.as_view()(request)
         self.assertContains(response, '<input id="id_debug" name="debug" type="hidden" value="')
 
     def test_action_url_s_id(self):
+        """
+        When a valid request is made to the login view, the form action
+        URL should contain the configured school ID query parameter.
+        """
         request = self.rf.get(self.valid_login)
         response = ParchmentView.as_view()(request)
         self.assertContains(response, 's_id=1234567890abcdef')
