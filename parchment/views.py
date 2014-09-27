@@ -17,6 +17,7 @@ class ParchmentView(FormView):
 
     connect_variables = {}
     parch_url = 'https://exchange.parchment.com/send/adds/index.php?main_page=sso'
+    debug_url = 'https://int-exchange.parchment.com/send/adds/index.php?main_page=sso'
     required_variables = ('student_id', 'customers_firstname', 'customers_lastname')
 
     def get(self, request, *args, **kwargs):
@@ -49,6 +50,9 @@ class ParchmentView(FormView):
             raise ImproperlyConfigured(
                 'PARCHMENT_SCHOOL_ID must be configured with your provided '
                 '16 character organization identifier')
-        url = getattr(settings, 'PARCHMENT_URL', self.parch_url)
+        if getattr(settings, 'PARCHMENT_DEBUG_MODE', False):
+            url = getattr(settings, 'PARCHMENT_DEBUG_URL', self.debug_url)
+        else:
+            url = getattr(settings, 'PARCHMENT_URL', self.parch_url)
         context['parchment_url'] = add_query_params(url, {'s_id': school_id})
         return context
