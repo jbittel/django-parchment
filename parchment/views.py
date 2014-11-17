@@ -8,6 +8,7 @@ from django.views.generic import FormView
 
 from .crypto import Parchment
 from .forms import ParchmentForm
+from .settings import url
 from .utils import add_query_params
 
 
@@ -15,10 +16,6 @@ class ParchmentView(FormView):
     form_class = ParchmentForm
     template_name = 'parchment/login.html'
 
-    if getattr(settings, 'PARCHMENT_DEBUG_MODE', False):
-        from .settings import parch_url as url
-    else:
-        from .settings import debug_url as url
     connect_variables = {}
     required_variables = ('student_id', 'customers_firstname', 'customers_lastname')
 
@@ -52,5 +49,5 @@ class ParchmentView(FormView):
             raise ImproperlyConfigured(
                 'PARCHMENT_SCHOOL_ID must be configured with your provided '
                 '16 character organization identifier')
-        context['parchment_url'] = add_query_params(self.url, {'s_id': school_id})
+        context['parchment_url'] = add_query_params(url, {'s_id': school_id})
         return context
