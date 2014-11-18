@@ -6,9 +6,9 @@ from django.http import HttpResponseBadRequest
 from django.utils.timezone import now
 from django.views.generic import FormView
 
+from .config import url
 from .crypto import Parchment
 from .forms import ParchmentForm
-from .settings import url
 from .utils import add_query_params
 
 
