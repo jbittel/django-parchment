@@ -6,7 +6,7 @@ from django.http import HttpResponseBadRequest
 from django.utils.timezone import now
 from django.views.generic import FormView
 
-from .config import url
+from .config import url, sso_key, school_id
 from .crypto import Parchment
 from .forms import ParchmentForm
 from .utils import add_query_params
@@ -32,11 +32,6 @@ class ParchmentView(FormView):
         self.connect_variables['rand'] = uuid.uuid4()
 
     def get_initial(self):
-        sso_key = getattr(settings, 'PARCHMENT_SSO_KEY', None)
-        if sso_key is None:
-            raise ImproperlyConfigured(
-                'PARCHMENT_SSO_KEY must be configured with your provided '
-                'SSO key')
         p = Parchment(sso_key)
         return {'parch5': p.encrypt(self.connect_variables),
                 'parchiv': p.iv,
@@ -44,10 +39,5 @@ class ParchmentView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super(ParchmentView, self).get_context_data(**kwargs)
-        school_id = getattr(settings, 'PARCHMENT_SCHOOL_ID', None)
-        if school_id is None:
-            raise ImproperlyConfigured(
-                'PARCHMENT_SCHOOL_ID must be configured with your provided '
-                '16 character organization identifier')
         context['parchment_url'] = add_query_params(url, {'s_id': school_id})
         return context
