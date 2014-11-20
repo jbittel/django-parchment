@@ -1,7 +1,5 @@
 import uuid
 
-from django.conf import settings
-from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpResponseBadRequest
 from django.utils.timezone import now
 from django.views.generic import FormView
