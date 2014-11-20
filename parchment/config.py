@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
 
 
 if getattr(settings, 'PARCHMENT_DEBUG_MODE', False):
