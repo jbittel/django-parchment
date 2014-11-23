@@ -2,7 +2,9 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 
 
-if getattr(settings, 'PARCHMENT_DEBUG_MODE', False):
+debug_mode = getattr(settings, 'PARCHMENT_DEBUG_MODE', False)
+
+if not debug_mode:
     url = getattr(settings, 'PARCHMENT_URL',
                   'https://exchange.parchment.com/send/adds/index.php?main_page=sso')
 else:
