@@ -4,7 +4,9 @@ from django.http import HttpResponseBadRequest
 from django.utils.timezone import now
 from django.views.generic import FormView
 
-from .config import url, sso_key, school_id
+from .config import school_id
+from .config import sso_key
+from .config import url
 from .crypto import Parchment
 from .forms import ParchmentForm
 from .utils import add_query_params
