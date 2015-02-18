@@ -5,7 +5,7 @@ from .views import ParchmentView
 
 
 urlpatterns = patterns('',
-    url(r'^parchment/?$',
+    url(r'^parchment/login/?$',
         ParchmentView.as_view(),
         name='parchment_login'),
 )
