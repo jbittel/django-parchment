@@ -5,11 +5,11 @@ from django.core.exceptions import ImproperlyConfigured
 debug_mode = getattr(settings, 'PARCHMENT_DEBUG_MODE', False)
 
 if not debug_mode:
-    url = getattr(settings, 'PARCHMENT_URL',
-                  'https://exchange.parchment.com/send/adds/index.php?main_page=sso')
+    base_url = getattr(settings, 'PARCHMENT_BASE_URL',
+            'https://exchange.parchment.com/send/adds/index.php?main_page=sso')
 else:
-    url = getattr(settings, 'PARCHMENT_DEBUG_URL',
-                  'https://int-exchange.parchment.com/send/adds/index.php?main_page=sso')
+    base_url = getattr(settings, 'PARCHMENT_DEBUG_BASE_URL',
+            'https://int-exchange.parchment.com/send/adds/index.php?main_page=sso')
 
 sso_key = getattr(settings, 'PARCHMENT_SSO_KEY', None)
 if sso_key is None:

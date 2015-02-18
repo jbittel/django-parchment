@@ -6,7 +6,7 @@ from django.views.generic import FormView
 
 from .config import school_id
 from .config import sso_key
-from .config import url
+from .config import base_url
 from .crypto import Parchment
 from .forms import ParchmentForm
 from .utils import add_query_params
@@ -39,5 +39,5 @@ class ParchmentView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super(ParchmentView, self).get_context_data(**kwargs)
-        context['parchment_url'] = add_query_params(url, {'s_id': school_id})
+        context['parchment_url'] = add_query_params(base_url, {'s_id': school_id})
         return context
