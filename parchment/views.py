@@ -1,5 +1,6 @@
 import uuid
 
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseBadRequest
 from django.utils.timezone import now
 from django.views.generic import FormView
@@ -18,6 +19,11 @@ class ParchmentView(FormView):
 
     connect_variables = {}
     required_variables = ('student_id', 'customers_firstname', 'customers_lastname')
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            raise PermissionDenied
+        return super(ParchmentView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         for var in self.required_variables:
